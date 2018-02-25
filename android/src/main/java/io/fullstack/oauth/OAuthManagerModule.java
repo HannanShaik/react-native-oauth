@@ -400,18 +400,17 @@ class OAuthManagerModule extends ReactContextBaseJavaModule {
   ) {
     WritableMap resp = Arguments.createMap();
     WritableMap response = Arguments.createMap();
-    Map accessTokenMap = new Gson().fromJson(accessToken.getRawResponse(), Map.class);
 
     Log.d(TAG, "Credential raw response: " + accessToken.getRawResponse());
     
     resp.putString("status", "ok");
     resp.putBoolean("authorized", true);
     resp.putString("provider", providerName);
-    String uuid = (String) accessTokenMap.get("user_id");
+    String uuid = (String) accessToken.getParameter("user_id");
     response.putString("uuid", uuid);
-    String oauthTokenSecret = (String) accessTokenMap.get("oauth_token_secret");
+    String oauthTokenSecret = (String) accessToken.getParameter("oauth_token_secret");
     
-    String tokenType = (String) accessTokenMap.get("token_type");
+    String tokenType = (String) accessToken.getParameter("token_type");
     if (tokenType == null) {
       tokenType = "Bearer";
     }
