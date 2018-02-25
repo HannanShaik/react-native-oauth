@@ -402,15 +402,33 @@ class OAuthManagerModule extends ReactContextBaseJavaModule {
     WritableMap response = Arguments.createMap();
 
     Log.d(TAG, "Credential raw response: " + accessToken.getRawResponse());
-    
+
+    /* Some things return as JSON, some as x-www-form-urlencoded (querystring) */
+
+    Map accessTokenMap = null;
+    try {
+      accessTokenMap = new Gson().fromJson(accessToken.getRawResponse(), Map.class);
+    } catch (JsonSyntaxException e) {
+      /*
+      failed to parse as JSON, so turn it into a HashMap which looks like the one we'd
+      get back from the JSON parser, so the rest of the code continues unchanged.
+      */
+      Log.d(TAG, "Credential looks like a querystring; parsing as such");
+      accessTokenMap = new HashMap();
+      accessTokenMap.put("user_id", accessToken.getParameter("user_id"));
+      accessTokenMap.put("oauth_token_secret", accessToken.getParameter("oauth_token_secret"));
+      accessTokenMap.put("token_type", accessToken.getParameter("token_type"));
+    }
+
+
     resp.putString("status", "ok");
     resp.putBoolean("authorized", true);
     resp.putString("provider", providerName);
-    String uuid = (String) accessToken.getParameter("user_id");
+    String uuid = (String) accessTokenMap.get("user_id");
     response.putString("uuid", uuid);
-    String oauthTokenSecret = (String) accessToken.getParameter("oauth_token_secret");
+    String oauthTokenSecret = (String) accessTokenMap.get("oauth_token_secret");
     
-    String tokenType = (String) accessToken.getParameter("token_type");
+    String tokenType = (String) accessTokenMap.get("token_type");
     if (tokenType == null) {
       tokenType = "Bearer";
     }
@@ -430,7 +448,7 @@ class OAuthManagerModule extends ReactContextBaseJavaModule {
 
     return resp;
   }
-
+  
   private WritableMap accessTokenResponse(
     final String providerName,
     final HashMap<String,Object> cfg,
