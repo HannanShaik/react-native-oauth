@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;

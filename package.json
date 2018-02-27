@@ -1,6 +1,6 @@
 {
-  "name": "react-native-oauth",
-  "version": "2.1.15",
+  "name": "rn-oauth",
+  "version": "2.1.17",
   "author": "Ari Lerner <ari@fullstack.io> (https://fullstackreact.com)",
   "description": "An oauth manager for dealing with the complexities of oauth",
   "main": "./react-native-oauth.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fullstackreact/react-native-oauth.git"
+    "url": "https://github.com/hannanshaik/react-native-oauth.git"
   },
   "license": "ISC",
   "keywords": [
@@ -32,8 +32,8 @@
   },
   "rnpm": {
     "commands": {
-      "prelink": "node_modules/react-native-oauth/bin/prepare.sh",
-      "postlink": "node_modules/react-native-oauth/bin/cocoapods.sh"
+      "prelink": "node_modules/rn-oauth/bin/prepare.sh",
+      "postlink": "node_modules/rn-oauth/bin/cocoapods.sh"
     },
     "ios": {
       "project": "ios/OAuthManager.xcodeproj"
